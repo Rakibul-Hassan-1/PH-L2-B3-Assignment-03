@@ -14,17 +14,20 @@ const app = express();
 
 // Security middleware
 app.use(helmet());
-app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? ['https://vercel.app', 'https://*.vercel.app'] 
-    : true,
-  credentials: true
-}));
+app.use(
+  cors({
+    origin:
+      process.env.NODE_ENV === 'production'
+        ? ['https://vercel.app', 'https://*.vercel.app']
+        : true,
+    credentials: true,
+  })
+);
 
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100 // limit each IP to 100 requests per windowMs
+  max: 100, // limit each IP to 100 requests per windowMs
 });
 app.use(limiter);
 
@@ -37,12 +40,12 @@ app.use('/api/books', bookRoutes);
 app.use('/api/borrow', borrowRoutes);
 
 // Health check endpoint
-app.get('/health', (req, res) => {
+app.get('/health', (req: express.Request, res: express.Response) => {
   res.status(200).json({
     success: true,
     message: 'Library Management API is running',
     timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV || 'development'
+    environment: process.env.NODE_ENV || 'development',
   });
 });
 
@@ -51,11 +54,11 @@ app.get('/health', (req, res) => {
 //   try {
 //     // Use a working MongoDB connection string if environment variable is not set
 //     const mongoURI = process.env.MONGODB_URI || 'mongodb+srv://testuser:testpass123@cluster0.mongodb.net/library_management?retryWrites=true&w=majority';
-    
+
 //     if (!process.env.MONGODB_URI) {
 //       console.log('⚠️  Using fallback MongoDB connection (for testing only)');
 //     }
-    
+
 //     await mongooseAny.connect(mongoURI);
 //     const dbState = mongooseAny.connection.readyState;
 //     const dbStates = {
@@ -64,7 +67,7 @@ app.get('/health', (req, res) => {
 //       2: 'connecting',
 //       3: 'disconnecting'
 //     };
-    
+
 //     // Get more detailed connection info
 //     const connectionInfo = {
 //       state: dbStates[dbState as keyof typeof dbStates] || 'unknown',
@@ -74,7 +77,7 @@ app.get('/health', (req, res) => {
 //       host: mongooseAny.connection.host || 'Not connected',
 //       port: mongooseAny.connection.port || 'Not connected'
 //     };
-    
+
 //     res.json({
 //       success: true,
 //       message: 'Database connection test',
@@ -98,7 +101,7 @@ app.get('/health', (req, res) => {
 // });
 
 // Root endpoint for Vercel
-app.get('/', (req, res) => {
+app.get('/', (req: express.Request, res: express.Response) => {
   res.status(200).json({
     success: true,
     message: 'Library Management API - Welcome!',
@@ -106,9 +109,9 @@ app.get('/', (req, res) => {
       health: '/health',
       'test-db': '/test-db',
       books: '/api/books',
-      borrow: '/api/borrow'
+      borrow: '/api/borrow',
     },
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   });
 });
 
@@ -116,11 +119,11 @@ app.get('/', (req, res) => {
 app.use(errorHandler);
 
 // 404 handler
-app.use('*', (req, res) => {
+app.use('*', (req: express.Request, res: express.Response) => {
   res.status(404).json({
     success: false,
     message: 'Route not found',
-    error: `Cannot ${req.method} ${req.originalUrl}`
+    error: `Cannot ${req.method} ${req.originalUrl}`,
   });
 });
 
