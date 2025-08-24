@@ -17,7 +17,9 @@ const startServer = async () => {
     // Start Express server
     app.listen(PORT, () => {
       console.log(`🚀 Server running on port ${PORT}`);
-      console.log(`📚 Library Management API ready at http://localhost:${PORT}`);
+      console.log(
+        `📚 Library Management API ready at http://localhost:${PORT}`
+      );
       console.log(`🏥 Health check: http://localhost:${PORT}/health`);
     });
   } catch (error) {

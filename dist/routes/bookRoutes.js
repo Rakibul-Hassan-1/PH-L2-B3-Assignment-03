@@ -60,13 +60,13 @@ router.post('/', async (req, res, next) => {
             isbn,
             description,
             copies,
-            available: available !== undefined ? available : true
+            available: available !== undefined ? available : true,
         });
         const savedBook = await book.save();
         res.status(201).json({
             success: true,
             message: 'Book created successfully',
-            data: savedBook
+            data: savedBook,
         });
     }
     catch (error) {
@@ -76,7 +76,7 @@ router.post('/', async (req, res, next) => {
 // 2. Get All Books - GET /api/books
 router.get('/', async (req, res, next) => {
     try {
-        const { filter, sortBy = 'createdAt', sort = 'desc', limit = 10 } = req.query;
+        const { filter, sortBy = 'createdAt', sort = 'desc', limit = 10, } = req.query;
         // Build query
         const query = {};
         // Apply genre filter
@@ -94,7 +94,7 @@ router.get('/', async (req, res, next) => {
         res.json({
             success: true,
             message: 'Books retrieved successfully',
-            data: books
+            data: books,
         });
     }
     catch (error) {
@@ -116,7 +116,7 @@ router.get('/:bookId', async (req, res, next) => {
         res.json({
             success: true,
             message: 'Book retrieved successfully',
-            data: book
+            data: book,
         });
     }
     catch (error) {
@@ -137,7 +137,10 @@ router.put('/:bookId', async (req, res, next) => {
         delete updateData.createdAt;
         delete updateData.updatedAt;
         // Find and update book
-        const book = await Book_1.default.findByIdAndUpdate(bookId, updateData, { new: true, runValidators: true }).select('-__v');
+        const book = await Book_1.default.findByIdAndUpdate(bookId, updateData, {
+            new: true,
+            runValidators: true,
+        }).select('-__v');
         if (!book) {
             throw (0, errorHandler_1.createError)('Book not found', 404);
         }
@@ -150,14 +153,14 @@ router.put('/:bookId', async (req, res, next) => {
                 return res.json({
                     success: true,
                     message: 'Book updated successfully',
-                    data: updatedBook
+                    data: updatedBook,
                 });
             }
         }
         res.json({
             success: true,
             message: 'Book updated successfully',
-            data: book
+            data: book,
         });
     }
     catch (error) {
@@ -179,7 +182,7 @@ router.delete('/:bookId', async (req, res, next) => {
         res.json({
             success: true,
             message: 'Book deleted successfully',
-            data: null
+            data: null,
         });
     }
     catch (error) {

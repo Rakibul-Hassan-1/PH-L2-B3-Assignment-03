@@ -42,7 +42,7 @@ router.post('/', async (req, res, next) => {
         const borrow = new Borrow_1.default({
             book: bookId,
             quantity,
-            dueDate: dueDateObj
+            dueDate: dueDateObj,
         });
         const savedBorrow = await borrow.save();
         // Update book copies and availability
@@ -50,7 +50,7 @@ router.post('/', async (req, res, next) => {
         res.status(201).json({
             success: true,
             message: 'Book borrowed successfully',
-            data: savedBorrow
+            data: savedBorrow,
         });
     }
     catch (error) {
@@ -66,8 +66,8 @@ router.get('/', async (req, res, next) => {
             {
                 $group: {
                     _id: '$book',
-                    totalQuantity: { $sum: '$quantity' }
-                }
+                    totalQuantity: { $sum: '$quantity' },
+                },
             },
             // Lookup book details
             {
@@ -75,12 +75,12 @@ router.get('/', async (req, res, next) => {
                     from: 'books',
                     localField: '_id',
                     foreignField: '_id',
-                    as: 'bookDetails'
-                }
+                    as: 'bookDetails',
+                },
             },
             // Unwind book details array
             {
-                $unwind: '$bookDetails'
+                $unwind: '$bookDetails',
             },
             // Project the required fields
             {
@@ -88,20 +88,20 @@ router.get('/', async (req, res, next) => {
                     _id: 0,
                     book: {
                         title: '$bookDetails.title',
-                        isbn: '$bookDetails.isbn'
+                        isbn: '$bookDetails.isbn',
                     },
-                    totalQuantity: 1
-                }
+                    totalQuantity: 1,
+                },
             },
             // Sort by total quantity (descending)
             {
-                $sort: { totalQuantity: -1 }
-            }
+                $sort: { totalQuantity: -1 },
+            },
         ]);
         res.json({
             success: true,
             message: 'Borrowed books summary retrieved successfully',
-            data: borrowedSummary
+            data: borrowedSummary,
         });
     }
     catch (error) {

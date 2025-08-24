@@ -20,12 +20,12 @@ app.use((0, cors_1.default)({
     origin: process.env.NODE_ENV === 'production'
         ? ['https://vercel.app', 'https://*.vercel.app']
         : true,
-    credentials: true
+    credentials: true,
 }));
 // Rate limiting
 const limiter = (0, express_rate_limit_1.default)({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100 // limit each IP to 100 requests per windowMs
+    max: 100, // limit each IP to 100 requests per windowMs
 });
 app.use(limiter);
 // Body parsing middleware
@@ -40,7 +40,7 @@ app.get('/health', (req, res) => {
         success: true,
         message: 'Library Management API is running',
         timestamp: new Date().toISOString(),
-        environment: process.env.NODE_ENV || 'development'
+        environment: process.env.NODE_ENV || 'development',
     });
 });
 // MongoDB connection test endpoint
@@ -98,9 +98,9 @@ app.get('/', (req, res) => {
             health: '/health',
             'test-db': '/test-db',
             books: '/api/books',
-            borrow: '/api/borrow'
+            borrow: '/api/borrow',
         },
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
     });
 });
 // Error handling middleware
@@ -110,7 +110,7 @@ app.use('*', (req, res) => {
     res.status(404).json({
         success: false,
         message: 'Route not found',
-        error: `Cannot ${req.method} ${req.originalUrl}`
+        error: `Cannot ${req.method} ${req.originalUrl}`,
     });
 });
 exports.default = app;

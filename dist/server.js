@@ -8,7 +8,7 @@ const app_1 = __importDefault(require("./app"));
 const database_1 = require("./config/database");
 // Load environment variables
 dotenv_1.default.config();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 // Start server
 const startServer = async () => {
     try {
