@@ -19,6 +19,18 @@ export const errorHandler = (
   // Log error for debugging
   console.error('Error:', err);
 
+  // MongoDB connection error
+  if (err.name === 'MongoNetworkError' || err.message?.includes('ECONNREFUSED')) {
+    return res.status(503).json({
+      success: false,
+      message: 'Database connection failed. Please check your MongoDB connection string.',
+      error: {
+        name: 'DatabaseConnectionError',
+        message: 'Unable to connect to MongoDB. Please ensure MONGODB_URI is set correctly in Vercel environment variables.'
+      }
+    });
+  }
+
   // Mongoose validation error
   if (err instanceof mongoose.Error.ValidationError) {
     const message = 'Validation failed';

@@ -10,7 +10,8 @@
     "test": "jest",
     "lint": "npx eslint .",
     "lint:fix": "npx eslint --fix",
-    "vercel-build": "tsc"
+    "vercel-build": "tsc",
+    "vercel-dev": "ts-node-dev --respawn --transpile-only src/vercel.ts"
   },
   "keywords": [
     "library",
